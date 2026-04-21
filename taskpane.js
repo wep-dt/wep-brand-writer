@@ -1,56 +1,53 @@
 /*
- * WEP Brand Writing Coach - JS con abilitazione test Browser
+ * WEP Brand Writing Coach - JS Ultra-Resiliente
  */
 
 let selectedAudience = 'parents';
 let selectedMode = 'REWRITE';
 let azureConfig = { apiKey: '', endpoint: '', deployment: '' };
 
-// Rendo initUI disponibile sempre per i test
-Office.onReady((info) => {
-    // Carica la UI in ogni caso, così puoi testarlo nel browser
+// Attivo la UI appena la pagina è carica, senza aspettare Office
+document.addEventListener("DOMContentLoaded", function() {
     initUI();
-    
+});
+
+Office.onReady((info) => {
     if (info.host === Office.HostType.Outlook) {
-        console.log("Inizializzato in Outlook");
-        loadSecrets();
-    } else {
-        console.log("Inizializzato in Browser (Modalità Test)");
-        // Per testare nel browser, puoi caricare i segreti se il percorso è raggiungibile
         loadSecrets();
     }
 });
 
 function initUI() {
-    console.log("Inizializzazione Pulsanti...");
-    document.querySelectorAll('.audience-btn').forEach(btn => {
-        btn.onclick = () => {
-            console.log("Target selezionato: " + btn.dataset.audience);
-            document.querySelectorAll('.audience-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            selectedAudience = btn.dataset.audience;
-        };
+    const audienceButtons = document.querySelectorAll('.audience-btn');
+    audienceButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            audienceButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            selectedAudience = this.dataset.audience;
+        });
     });
 
     const modeRewrite = document.getElementById('mode-rewrite');
     const modeGenerate = document.getElementById('mode-generate');
     const instructionContainer = document.getElementById('instructions-container');
 
-    modeRewrite.onclick = () => {
-        selectedMode = 'REWRITE';
-        modeRewrite.classList.add('active');
-        modeGenerate.classList.remove('active');
-        instructionContainer.style.display = 'none';
-        document.getElementById('btn-text').textContent = "Brand Check";
-    };
+    if (modeRewrite && modeGenerate) {
+        modeRewrite.addEventListener('click', function() {
+            selectedMode = 'REWRITE';
+            this.classList.add('active');
+            modeGenerate.classList.remove('active');
+            instructionContainer.style.display = 'none';
+            document.getElementById('btn-text').textContent = "Brand Check";
+        });
 
-    modeGenerate.onclick = () => {
-        selectedMode = 'GENERATE';
-        modeGenerate.classList.add('active');
-        modeRewrite.classList.remove('active');
-        instructionContainer.style.display = 'block';
-        document.getElementById('btn-text').textContent = "Genera Email";
-    };
+        modeGenerate.addEventListener('click', function() {
+            selectedMode = 'GENERATE';
+            this.classList.add('active');
+            modeRewrite.classList.remove('active');
+            instructionContainer.style.display = 'block';
+            document.getElementById('btn-text').textContent = "Genera Email";
+        });
+    }
 
     document.getElementById('cta-btn').onclick = handleBrandCheck;
     document.getElementById('apply-btn').onclick = applySuggestion;
@@ -63,9 +60,7 @@ async function loadSecrets() {
         azureConfig.apiKey = secrets.azure_openai_key;
         azureConfig.endpoint = secrets.azure_openai_endpoint;
         azureConfig.deployment = secrets.azure_openai_deployment;
-    } catch (e) { 
-        console.log("Secrets non trovati via fetch."); 
-    }
+    } catch (e) { console.log("Secrets non trovati."); }
 }
 
 async function handleBrandCheck() {
@@ -128,6 +123,6 @@ function applySuggestion() {
     if (Office.context && Office.context.mailbox && Office.context.mailbox.item) {
         Office.context.mailbox.item.body.setSelectedDataAsync(text, { coercionType: Office.CoercionType.Text });
     } else {
-        alert("Simulazione: testo pronto per Outlook!");
+        alert("Simulazione Browser: Testo pronto!");
     }
 }
