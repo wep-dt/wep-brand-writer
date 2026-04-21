@@ -1,21 +1,31 @@
 /*
- * WEP Brand Writing Coach - Final JS
+ * WEP Brand Writing Coach - JS con abilitazione test Browser
  */
 
 let selectedAudience = 'parents';
 let selectedMode = 'REWRITE';
 let azureConfig = { apiKey: '', endpoint: '', deployment: '' };
 
+// Rendo initUI disponibile sempre per i test
 Office.onReady((info) => {
+    // Carica la UI in ogni caso, così puoi testarlo nel browser
+    initUI();
+    
     if (info.host === Office.HostType.Outlook) {
-        initUI();
+        console.log("Inizializzato in Outlook");
+        loadSecrets();
+    } else {
+        console.log("Inizializzato in Browser (Modalità Test)");
+        // Per testare nel browser, puoi caricare i segreti se il percorso è raggiungibile
         loadSecrets();
     }
 });
 
 function initUI() {
+    console.log("Inizializzazione Pulsanti...");
     document.querySelectorAll('.audience-btn').forEach(btn => {
         btn.onclick = () => {
+            console.log("Target selezionato: " + btn.dataset.audience);
             document.querySelectorAll('.audience-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             selectedAudience = btn.dataset.audience;
@@ -31,6 +41,7 @@ function initUI() {
         modeRewrite.classList.add('active');
         modeGenerate.classList.remove('active');
         instructionContainer.style.display = 'none';
+        document.getElementById('btn-text').textContent = "Brand Check";
     };
 
     modeGenerate.onclick = () => {
@@ -38,6 +49,7 @@ function initUI() {
         modeGenerate.classList.add('active');
         modeRewrite.classList.remove('active');
         instructionContainer.style.display = 'block';
+        document.getElementById('btn-text').textContent = "Genera Email";
     };
 
     document.getElementById('cta-btn').onclick = handleBrandCheck;
@@ -46,12 +58,14 @@ function initUI() {
 
 async function loadSecrets() {
     try {
-        const response = await fetch('../digisup agent/config/secrets.json');
+        const response = await fetch('config/secrets.json');
         const secrets = await response.json();
         azureConfig.apiKey = secrets.azure_openai_key;
         azureConfig.endpoint = secrets.azure_openai_endpoint;
         azureConfig.deployment = secrets.azure_openai_deployment;
-    } catch (e) { console.error("Secrets not found."); }
+    } catch (e) { 
+        console.log("Secrets non trovati via fetch."); 
+    }
 }
 
 async function handleBrandCheck() {
@@ -59,6 +73,11 @@ async function handleBrandCheck() {
     const instruction = document.getElementById('instruction-input').value;
     const btnLoader = document.getElementById('btn-loader');
     
+    if (!text && selectedMode === 'REWRITE') {
+        alert("Inserisci un testo da rifrasare!");
+        return;
+    }
+
     document.getElementById('cta-btn').disabled = true;
     btnLoader.style.display = 'inline-block';
 
@@ -83,6 +102,10 @@ async function callAzureAI(text, instruction) {
     Se email a genitori: Oggetto deve iniziare con 'WEP – '. 
     Mantieni intatti i pattern ##...##.`;
 
+    if (!azureConfig.apiKey) {
+        throw new Error("Configurazione AI mancante. L'app deve caricare i segreti.");
+    }
+
     const url = `${azureConfig.endpoint}/openai/deployments/${azureConfig.deployment}/chat/completions?api-version=2024-02-15-preview`;
     
     const res = await fetch(url, {
@@ -102,5 +125,9 @@ async function callAzureAI(text, instruction) {
 
 function applySuggestion() {
     const text = document.getElementById('result-text').textContent;
-    Office.context.mailbox.item.body.setSelectedDataAsync(text, { coercionType: Office.CoercionType.Text });
+    if (Office.context && Office.context.mailbox && Office.context.mailbox.item) {
+        Office.context.mailbox.item.body.setSelectedDataAsync(text, { coercionType: Office.CoercionType.Text });
+    } else {
+        alert("Simulazione: testo pronto per Outlook!");
+    }
 }
