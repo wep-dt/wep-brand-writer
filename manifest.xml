@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="MailApp">
   <Id>6c2e3a1f-8b9d-4e5c-a1b2-c3d4e5f6a9b7</Id>
-  <Version>1.0.2.0</Version>
+  <Version>1.0.6.0</Version>
   <ProviderName>WEP</ProviderName>
   <DefaultLocale>it-IT</DefaultLocale>
   <DisplayName DefaultValue="WEP Brand Writer"/>
@@ -30,52 +30,4 @@
   <Rule xsi:type="RuleCollection" Mode="Or">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit" />
   </Rule>
-
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" xsi:type="VersionOverridesV1_0">
-    <Hosts>
-      <Host xsi:type="MailHost">
-        <DesktopFormFactor>
-          <ExtensionPoint xsi:type="MessageComposeCommandSurface">
-            <OfficeTab id="TabDefault">
-              <Group id="wepGroup">
-                <Label resid="groupLabel" />
-                <Control xsi:type="Button" id="taskpaneButton">
-                  <Label resid="paneButtonLabel" />
-                  <Supertip>
-                    <Title resid="paneButtonLabel" />
-                    <Description resid="paneButtonDesc" />
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="icon16" />
-                    <bt:Image size="32" resid="icon32" />
-                    <bt:Image size="80" resid="icon80" />
-                  </Icon>
-                  <Action xsi:type="ShowTaskpane">
-                    <SourceLocation resid="taskpaneUrl" />
-                  </Action>
-                </Control>
-              </Group>
-            </OfficeTab>
-          </ExtensionPoint>
-        </DesktopFormFactor>
-      </Host>
-    </Hosts>
-    <Resources>
-      <bt:Images>
-        <bt:Image id="icon16" DefaultValue="https://wep-dt.github.io/wep-brand-writer/assets/icon-16.png" />
-        <bt:Image id="icon32" DefaultValue="https://wep-dt.github.io/wep-brand-writer/assets/icon-32.png" />
-        <bt:Image id="icon80" DefaultValue="https://wep-dt.github.io/wep-brand-writer/assets/icon-64.png" />
-      </bt:Images>
-      <bt:Urls>
-        <bt:Url id="taskpaneUrl" DefaultValue="https://wep-dt.github.io/wep-brand-writer/taskpane.html" />
-      </bt:Urls>
-      <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="WEP Brand" />
-        <bt:String id="paneButtonLabel" DefaultValue="Brand Coach" />
-      </bt:ShortStrings>
-      <bt:LongStrings>
-        <bt:String id="paneButtonDesc" DefaultValue="Apri il Coach WEP." />
-      </bt:LongStrings>
-    </Resources>
-  </VersionOverrides>
 </OfficeApp>
