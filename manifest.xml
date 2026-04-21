@@ -13,9 +13,9 @@
     <DisplayName DefaultValue="WEP Brand Writer" />
     <Description DefaultValue="Assistente Brand Writing WEP" />
     
-    <!-- Utilizzo di icone pubbliche Microsoft per garantire la validazione dell'Admin Center -->
-    <IconUrl DefaultValue="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/brand-icons/product/svg/outlook_16x1.svg" />
-    <HighResolutionIconUrl DefaultValue="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/brand-icons/product/svg/outlook_32x1.svg" />
+    <!-- Utilizzo di PNG pubbliche per superare la validazione delle estensioni -->
+    <IconUrl DefaultValue="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/outlook_64x1.png" />
+    <HighResolutionIconUrl DefaultValue="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/outlook_96x1.png" />
     <SupportUrl DefaultValue="https://digitalsupport.wep.org" />
     
     <Hosts>
@@ -84,9 +84,9 @@
         </Hosts>
         <Resources>
             <bt:Images>
-                <bt:Image id="icon16" DefaultValue="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/brand-icons/product/svg/outlook_16x1.svg" />
-                <bt:Image id="icon32" DefaultValue="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/brand-icons/product/svg/outlook_32x1.svg" />
-                <bt:Image id="icon80" DefaultValue="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/brand-icons/product/svg/outlook_48x1.svg" />
+                <bt:Image id="icon16" DefaultValue="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/outlook_16x1.png" />
+                <bt:Image id="icon32" DefaultValue="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/outlook_32x1.png" />
+                <bt:Image id="icon80" DefaultValue="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/outlook_96x1.png" />
             </bt:Images>
             <bt:Urls>
                 <bt:Url id="funcFile" DefaultValue="https://wep-dt.github.io/wep-brand-writer/taskpane.html" />
