@@ -6,20 +6,18 @@
     xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" 
     xsi:type="MailApp">
     
-    <Id>a23b8c4d-9e5f-4a1b-bd6c-7e8f9a0b1c2d</Id>
-    <Version>1.0.0.0</Version>
+    <Id>f32e1b4a-8d6c-4c2b-bd7d-9a0b1c2d3e4f</Id>
+    <Version>1.0.0.1</Version>
     <ProviderName>WEP Digital</ProviderName>
     <DefaultLocale>it-IT</DefaultLocale>
     <DisplayName DefaultValue="WEP Brand Writer" />
     <Description DefaultValue="Assistente Brand Writing WEP" />
     
-    <IconUrl DefaultValue="https://wep-dt.github.io/wep-brand-writer/assets/icon-64.png" />
-    <HighResolutionIconUrl DefaultValue="https://wep-dt.github.io/wep-brand-writer/assets/icon-128.png" />
+    <!-- Utilizzo di icone pubbliche Microsoft per garantire la validazione dell'Admin Center -->
+    <IconUrl DefaultValue="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/brand-icons/product/svg/outlook_16x1.svg" />
+    <HighResolutionIconUrl DefaultValue="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/brand-icons/product/svg/outlook_32x1.svg" />
     <SupportUrl DefaultValue="https://digitalsupport.wep.org" />
     
-    <AppDomains>
-        <AppDomain>https://wep-dt.github.io</AppDomain>
-    </AppDomains>
     <Hosts>
         <Host Name="Mailbox" />
     </Hosts>
@@ -86,12 +84,12 @@
         </Hosts>
         <Resources>
             <bt:Images>
-                <bt:Image id="icon16" DefaultValue="https://wep-dt.github.io/wep-brand-writer/assets/icon-16.png" />
-                <bt:Image id="icon32" DefaultValue="https://wep-dt.github.io/wep-brand-writer/assets/icon-32.png" />
-                <bt:Image id="icon80" DefaultValue="https://wep-dt.github.io/wep-brand-writer/assets/icon-80.png" />
+                <bt:Image id="icon16" DefaultValue="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/brand-icons/product/svg/outlook_16x1.svg" />
+                <bt:Image id="icon32" DefaultValue="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/brand-icons/product/svg/outlook_32x1.svg" />
+                <bt:Image id="icon80" DefaultValue="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/brand-icons/product/svg/outlook_48x1.svg" />
             </bt:Images>
             <bt:Urls>
-                <bt:Url id="funcFile" DefaultValue="https://wep-dt.github.io/wep-brand-writer/commands.html" />
+                <bt:Url id="funcFile" DefaultValue="https://wep-dt.github.io/wep-brand-writer/taskpane.html" />
                 <bt:Url id="taskpaneUrl" DefaultValue="https://wep-dt.github.io/wep-brand-writer/taskpane.html" />
             </bt:Urls>
             <bt:ShortStrings>
