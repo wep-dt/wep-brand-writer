@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --wep-primary: #1e3a8a; /* Deep blue/navy - professional */
-            --wep-secondary: #10b981; /* Emerald - empathetic */
+            --wep-primary: #1e3a8a;
+            --wep-secondary: #10b981;
             --wep-bg: #f8fafc;
             --wep-text: #1e293b;
             --wep-card: #ffffff;
@@ -138,16 +138,6 @@
             color: var(--wep-text);
         }
 
-        textarea:focus {
-            outline: none;
-            border-color: var(--wep-secondary);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-        }
-
-        .actions {
-            margin-top: 15px;
-        }
-
         .primary-btn {
             width: 100%;
             background: var(--wep-primary);
@@ -164,15 +154,6 @@
             transition: opacity 0.2s;
         }
 
-        .primary-btn:hover {
-            opacity: 0.9;
-        }
-
-        .primary-btn:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
-
         #result-area {
             display: none;
             margin-top: 20px;
@@ -187,39 +168,11 @@
             font-size: 0.9rem;
             line-height: 1.5;
             white-space: pre-wrap;
-            position: relative;
-        }
-
-        .copy-badge {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(255,255,255,0.8);
-            border-radius: 5px;
-            padding: 2px 6px;
-            font-size: 0.7rem;
-            cursor: pointer;
-        }
-
-        .footer {
-            padding: 15px;
-            border-top: 1px solid var(--wep-border);
-            text-align: center;
-            font-size: 0.7rem;
-            color: #94a3b8;
         }
 
         .loader {
             display: none;
-            margin-left: 10px;
         }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate { animation: fadeIn 0.3s ease-out forwards; }
     </style>
 </head>
 <body>
@@ -227,7 +180,7 @@
         <div class="logo">
             <i class="fas fa-magic"></i> WEP Brand Writer
         </div>
-        <div id="status-dot" style="width: 10px; height: 10px; border-radius: 50%; background: #64748b;"></div>
+        <div id="status-dot" style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></div>
     </header>
 
     <main>
@@ -240,16 +193,16 @@
 
         <span class="section-title">2. Modalità</span>
         <div class="mode-container">
-            <div class="mode-tab active" id="mode-rewrite">Rifrasa Testo</div>
+            <div class="mode-tab active" id="mode-rewrite">Rifrasa</div>
             <div class="mode-tab" id="mode-generate">Scrivi Nuovo</div>
         </div>
 
-        <div id="input-container" class="card">
-            <textarea id="text-input" placeholder="Seleziona testo nell'email o incolla qui..."></textarea>
+        <div class="card">
+            <textarea id="text-input" placeholder="Incolla testo..."></textarea>
             <div id="instructions-container" style="display: none; margin-top: 10px;">
-                <textarea id="instruction-input" placeholder="Cosa dobbiamo scrivere? (es: Email per convocazione colloquio)" style="min-height: 80px;"></textarea>
+                <textarea id="instruction-input" placeholder="Cosa dobbiamo scrivere?"></textarea>
             </div>
-            <div class="actions">
+            <div style="margin-top: 15px;">
                 <button id="cta-btn" class="primary-btn">
                     <span id="btn-text">Brand Check</span>
                     <i class="fas fa-spinner fa-spin loader" id="btn-loader"></i>
@@ -257,21 +210,14 @@
             </div>
         </div>
 
-        <div id="result-area" class="card animate">
-            <span class="section-title">Suggerimento del Coach</span>
-            <div class="result-box" id="result-text">
-                <!-- AI Output here -->
-            </div>
+        <div id="result-area" class="card">
+            <span class="section-title">Suggerimento</span>
+            <div class="result-box" id="result-text"></div>
             <button id="apply-btn" class="primary-btn" style="margin-top: 15px; background: var(--wep-secondary);">
-                Inserisci nell'Email
-                <i class="fas fa-check"></i>
+                Inserisci
             </button>
         </div>
     </main>
-
-    <div class="footer">
-        Strictly adhering to WEP Brand Communication & SharePoint Guidelines.
-    </div>
 
     <script src="taskpane.js"></script>
 </body>
