@@ -154,6 +154,10 @@
             transition: opacity 0.2s;
         }
 
+        .primary-btn:disabled {
+            opacity: 0.5;
+        }
+
         #result-area {
             display: none;
             margin-top: 20px;
@@ -178,29 +182,36 @@
 <body>
     <header>
         <div class="logo">
-            <i class="fas fa-magic"></i> WEP Brand Writer
+            <i class="fas fa-magic"></i> WEP Writer
         </div>
-        <div id="status-dot" style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <i class="fas fa-cog" id="settings-toggle" style="cursor:pointer; color: #64748b;"></i>
+            <div id="status-dot" style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></div>
+        </div>
     </header>
 
+    <div id="settings-panel" style="display:none; padding: 10px; background: #fee2e2; font-size: 0.8rem; border-bottom: 1px solid #ef4444;">
+        <input type="password" id="temp-key" placeholder="API Key..." style="width: 70%; padding: 5px;">
+        <button id="save-key-btn" style="padding: 5px 10px;">Save</button>
+    </div>
+
     <main>
-        <span class="section-title">1. Destinatario</span>
+        <span class="section-title">Target</span>
         <div class="card audience-grid">
             <div class="audience-btn active" data-audience="parents">Genitori</div>
             <div class="audience-btn" data-audience="students">Studenti</div>
             <div class="audience-btn" data-audience="partners">Partner</div>
         </div>
 
-        <span class="section-title">2. Modalità</span>
         <div class="mode-container">
             <div class="mode-tab active" id="mode-rewrite">Rifrasa</div>
-            <div class="mode-tab" id="mode-generate">Scrivi Nuovo</div>
+            <div class="mode-tab" id="mode-generate">Nuova Email</div>
         </div>
 
         <div class="card">
-            <textarea id="text-input" placeholder="Incolla testo..."></textarea>
+            <textarea id="text-input" placeholder="Testo da analizzare..."></textarea>
             <div id="instructions-container" style="display: none; margin-top: 10px;">
-                <textarea id="instruction-input" placeholder="Cosa dobbiamo scrivere?"></textarea>
+                <textarea id="instruction-input" placeholder="Istruzioni aggiuntive..."></textarea>
             </div>
             <div style="margin-top: 15px;">
                 <button id="cta-btn" class="primary-btn">
@@ -214,7 +225,7 @@
             <span class="section-title">Suggerimento</span>
             <div class="result-box" id="result-text"></div>
             <button id="apply-btn" class="primary-btn" style="margin-top: 15px; background: var(--wep-secondary);">
-                Inserisci
+                Applica in Outlook
             </button>
         </div>
     </main>
