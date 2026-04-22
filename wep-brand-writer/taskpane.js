@@ -1,5 +1,5 @@
 /*
- * WEP Brand Writing Coach - JS con gestione Configurazione
+ * WEP Brand Writing Coach - JS Ultra-Safe
  */
 
 let selectedAudience = 'parents';
@@ -10,24 +10,33 @@ let azureConfig = {
     deployment: 'gpt-4o-mini' 
 };
 
-document.addEventListener("DOMContentLoaded", function() {
+// Funzione principale di avvio
+function startApp() {
     initUI();
     loadLocalConfig();
-});
-
-Office.onReady((info) => {
-    if (info.host === Office.HostType.Outlook) {
-        loadSecrets();
+    
+    if (window.Office) {
+        Office.onReady((info) => {
+            if (info.host === Office.HostType.Outlook) {
+                loadSecrets();
+            }
+        });
     }
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startApp);
+} else {
+    startApp();
+}
 
 function initUI() {
     const audienceButtons = document.querySelectorAll('.audience-btn');
     audienceButtons.forEach(btn => {
-        btn.onclick = () => {
+        btn.onclick = function() {
             audienceButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            selectedAudience = btn.dataset.audience;
+            this.classList.add('active');
+            selectedAudience = this.dataset.audience;
         };
     });
 
@@ -35,51 +44,60 @@ function initUI() {
     const modeGenerate = document.getElementById('mode-generate');
     const instructionContainer = document.getElementById('instructions-container');
 
-    modeRewrite.onclick = () => {
-        selectedMode = 'REWRITE';
-        modeRewrite.classList.add('active');
-        modeGenerate.classList.remove('active');
-        instructionContainer.style.display = 'none';
-        document.getElementById('btn-text').textContent = "Brand Check";
-    };
+    if (modeRewrite && modeGenerate) {
+        modeRewrite.onclick = function() {
+            selectedMode = 'REWRITE';
+            modeRewrite.classList.add('active');
+            modeGenerate.classList.remove('active');
+            if(instructionContainer) instructionContainer.style.display = 'none';
+            document.getElementById('btn-text').textContent = "Brand Check";
+        };
 
-    modeGenerate.onclick = () => {
-        selectedMode = 'GENERATE';
-        modeGenerate.classList.add('active');
-        modeRewrite.classList.remove('active');
-        instructionContainer.style.display = 'block';
-        document.getElementById('btn-text').textContent = "Genera Email";
-    };
+        modeGenerate.onclick = function() {
+            selectedMode = 'GENERATE';
+            modeGenerate.classList.add('active');
+            modeRewrite.classList.remove('active');
+            if(instructionContainer) instructionContainer.style.display = 'block';
+            document.getElementById('btn-text').textContent = "Genera Email";
+        };
+    }
 
-    // Impostazioni
-    document.getElementById('settings-toggle').onclick = () => {
-        const panel = document.getElementById('settings-panel');
-        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-    };
+    const settingsToggle = document.getElementById('settings-toggle');
+    if (settingsToggle) {
+        settingsToggle.onclick = () => {
+            const panel = document.getElementById('settings-panel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        };
+    }
 
-    document.getElementById('save-key-btn').onclick = () => {
-        azureConfig.apiKey = document.getElementById('temp-key').value;
-        azureConfig.endpoint = document.getElementById('temp-endpoint').value;
-        azureConfig.deployment = document.getElementById('temp-deploy').value;
-        
-        localStorage.setItem('wep_config_v2', JSON.stringify(azureConfig));
-        alert("Configurazione salvata!");
-        document.getElementById('settings-panel').style.display = 'none';
-    };
+    const saveBtn = document.getElementById('save-key-btn');
+    if (saveBtn) {
+        saveBtn.onclick = () => {
+            azureConfig.apiKey = document.getElementById('temp-key').value;
+            azureConfig.endpoint = document.getElementById('temp-endpoint').value;
+            azureConfig.deployment = document.getElementById('temp-deploy').value;
+            
+            localStorage.setItem('wep_config_v2', JSON.stringify(azureConfig));
+            alert("Configurazione salvata!");
+            document.getElementById('settings-panel').style.display = 'none';
+        };
+    }
 
-    document.getElementById('cta-btn').onclick = handleBrandCheck;
-    document.getElementById('apply-btn').onclick = applySuggestion;
+    if(document.getElementById('cta-btn')) document.getElementById('cta-btn').onclick = handleBrandCheck;
+    if(document.getElementById('apply-btn')) document.getElementById('apply-btn').onclick = applySuggestion;
 }
 
 function loadLocalConfig() {
-    const saved = localStorage.getItem('wep_config_v2');
-    if (saved) {
-        const parsed = JSON.parse(saved);
-        azureConfig = parsed;
-        document.getElementById('temp-key').value = parsed.apiKey || '';
-        document.getElementById('temp-endpoint').value = parsed.endpoint || 'https://digisup-openai.openai.azure.com';
-        document.getElementById('temp-deploy').value = parsed.deployment || 'gpt-4o-mini';
-    }
+    try {
+        const saved = localStorage.getItem('wep_config_v2');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            azureConfig = parsed;
+            if(document.getElementById('temp-key')) document.getElementById('temp-key').value = parsed.apiKey || '';
+            if(document.getElementById('temp-endpoint')) document.getElementById('temp-endpoint').value = parsed.endpoint || '';
+            if(document.getElementById('temp-deploy')) document.getElementById('temp-deploy').value = parsed.deployment || '';
+        }
+    } catch (e) {}
 }
 
 async function loadSecrets() {
@@ -90,9 +108,8 @@ async function loadSecrets() {
             azureConfig.apiKey = secrets.azure_openai_key;
             azureConfig.endpoint = secrets.azure_openai_endpoint;
             azureConfig.deployment = secrets.azure_openai_deployment;
-            localStorage.setItem('wep_config_v2', JSON.stringify(azureConfig));
         }
-    } catch (e) { console.log("Impossibile caricare secrets.json automaticamente."); }
+    } catch (e) {}
 }
 
 async function handleBrandCheck() {
@@ -101,12 +118,12 @@ async function handleBrandCheck() {
     const btnLoader = document.getElementById('btn-loader');
     
     if (!azureConfig.apiKey) {
-        alert("Inserisci la API Key nelle impostazioni (icona ingranaggio)!");
+        alert("Manca la API Key! Clicca sull'ingranaggio.");
         return;
     }
 
     document.getElementById('cta-btn').disabled = true;
-    btnLoader.style.display = 'inline-block';
+    if (btnLoader) btnLoader.style.display = 'inline-block';
 
     try {
         const response = await callAzureAI(text, instruction);
@@ -116,19 +133,12 @@ async function handleBrandCheck() {
         alert("Errore AI: " + err.message);
     } finally {
         document.getElementById('cta-btn').disabled = false;
-        btnLoader.style.display = 'none';
+        if (btnLoader) btnLoader.style.display = 'none';
     }
 }
 
 async function callAzureAI(text, instruction) {
-    const systemPrompt = `Sei il WEP Brand Writing Coach. 
-    REGOLE: Tono caldo, umano, professionale (Cool older sibling). 
-    Frasi brevi, voce attiva, no gergo. 
-    AUDIENCE: ${selectedAudience}. Se genitori (Italiano): dai del LEI. 
-    MODE: ${selectedMode}. 
-    Se email a genitori: Oggetto deve iniziare con 'WEP – '. 
-    Mantieni intatti i pattern ##...##.`;
-
+    const systemPrompt = `Sei il WEP Brand Writing Coach. REGOLE: Tono caldo, umano, professionale. Frasi brevi, voce attiva. AUDIENCE: ${selectedAudience}. Se genitori: dai del LEI. MODE: ${selectedMode}. Mantieni intatti ##...##.`;
     const url = `${azureConfig.endpoint}/openai/deployments/${azureConfig.deployment}/chat/completions?api-version=2024-02-15-preview`;
     
     const res = await fetch(url, {
@@ -142,21 +152,17 @@ async function callAzureAI(text, instruction) {
         })
     });
 
-    if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error ? errData.error.message : "Fallimento chiamata Azure.");
-    }
-
+    if (!res.ok) throw new Error("Chiamata Azure fallita.");
     const data = await res.json();
     return data.choices[0].message.content;
 }
 
 function applySuggestion() {
     const text = document.getElementById('result-text').textContent;
-    if (window.Office && Office.context && Office.context.mailbox) {
+    if (window.Office && Office.context && Office.context.mailbox && Office.context.mailbox.item) {
         Office.context.mailbox.item.body.setSelectedDataAsync(text, { coercionType: Office.CoercionType.Text });
     } else {
         navigator.clipboard.writeText(text);
-        alert("Testo copiato! Incollalo dove vuoi.");
+        alert("Copiato!");
     }
 }
