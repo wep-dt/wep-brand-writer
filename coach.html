@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEP Brand Writing Coach</title>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --wep-primary: #1e3a8a;
+            --wep-secondary: #10b981;
+            --wep-bg: #f8fafc;
+            --wep-text: #1e293b;
+            --wep-card: #ffffff;
+            --wep-border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--wep-bg);
+            color: var(--wep-text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--wep-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--wep-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i {
+            color: var(--wep-secondary);
+        }
+
+        main {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .card {
+            background: var(--wep-card);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid var(--wep-border);
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .audience-btn {
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            padding: 10px 5px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .audience-btn.active {
+            background: var(--wep-primary);
+            color: white;
+            border-color: var(--wep-primary);
+        }
+
+        .mode-container {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 3px;
+            margin-bottom: 15px;
+        }
+
+        .mode-tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .mode-tab.active {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: var(--wep-primary);
+        }
+
+        textarea {
+            width: 100%;
+            border: 1px solid var(--wep-border);
+            border-radius: 10px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: none;
+            min-height: 120px;
+            box-sizing: border-box;
+            background: #fff;
+            color: var(--wep-text);
+        }
+
+        .primary-btn {
+            width: 100%;
+            background: var(--wep-primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: opacity 0.2s;
+        }
+
+        .primary-btn:disabled {
+            opacity: 0.5;
+        }
+
+        #result-area {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #settings-panel {
+            display:none; 
+            padding: 15px; 
+            background: #f1f5f9; 
+            border-bottom: 2px solid var(--wep-primary); 
+            font-size: 0.8rem;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid var(--wep-border);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .result-box {
+            background: #f0fdf4;
+            border: 1px solid #bef264;
+            color: #166534;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .loader {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-magic"></i> WEP Writer
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <i class="fas fa-cog" id="settings-toggle" style="cursor:pointer; color: #64748b;"></i>
+            <div id="status-dot" style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></div>
+        </div>
+    </header>
+
+    <div id="settings-panel">
+        <div class="input-group">
+            <label>Azure API Key:</label>
+            <input type="password" id="temp-key" placeholder="Incolla chiave...">
+        </div>
+        <div class="input-group">
+            <label>Endpoint:</label>
+            <input type="text" id="temp-endpoint" value="https://digisup.openai.azure.com/">
+        </div>
+        <div class="input-group">
+            <label>Deployment Name:</label>
+            <input type="text" id="temp-deploy" value="gpt-4o-mini">
+        </div>
+        <button id="save-key-btn" class="primary-btn" style="background: var(--wep-secondary); padding: 8px;">Salva Configurazione</button>
+    </div>
+
+    <main>
+        <span class="section-title">Target audience</span>
+        <div class="card audience-grid">
+            <div class="audience-btn active" data-audience="parents">Genitori</div>
+            <div class="audience-btn" data-audience="students">Studenti</div>
+            <div class="audience-btn" data-audience="partners">Partner</div>
+        </div>
+
+        <div class="mode-container">
+            <div class="mode-tab active" id="mode-rewrite">Rifrasa</div>
+            <div class="mode-tab" id="mode-generate">Nuova Email</div>
+        </div>
+
+        <div class="card">
+            <textarea id="text-input" placeholder="Incolla qui il testo da analizzare..."></textarea>
+            <div id="instructions-container" style="display: none; margin-top: 10px;">
+                <textarea id="instruction-input" placeholder="Cosa dobbiamo scrivere? (es. Conferma ricezione documenti)"></textarea>
+            </div>
+            <div style="margin-top: 15px;">
+                <button id="cta-btn" class="primary-btn">
+                    <span id="btn-text">Brand Check</span>
+                    <i class="fas fa-spinner fa-spin loader" id="btn-loader"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="result-area" class="card">
+            <span class="section-title">Suggerimento WEP Coach</span>
+            <div class="result-box" id="result-text"></div>
+            <button id="apply-btn" class="primary-btn" style="margin-top: 15px; background: var(--wep-secondary);">
+                Copia/Applica
+            </button>
+        </div>
+    </main>
+
+    <script src="coach.js"></script>
+</body>
+</html>
